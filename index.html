@@ -6,11 +6,11 @@
   <title>RexCard Plus — криптокарта</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #05060a;
-      --panel: rgba(15, 18, 32, 0.85);
+      --panel: rgba(10, 12, 22, 0.82);
       --glass: rgba(255, 255, 255, 0.05);
       --text: #f4f6ff;
       --muted: #96a0c7;
@@ -29,13 +29,25 @@
     body {
       margin: 0;
       font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: radial-gradient(circle at 20% 20%, rgba(45, 226, 230, 0.2), transparent 40%),
-                  radial-gradient(circle at 80% 0%, rgba(124, 92, 252, 0.3), transparent 45%),
-                  var(--bg);
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       line-height: 1.6;
       scroll-behavior: smooth;
+      position: relative;
+      z-index: 0;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(135deg, rgba(5, 6, 10, 0.85), rgba(5, 6, 10, 0.7)),
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80');
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.1);
+      z-index: -1;
     }
 
     header {
@@ -161,6 +173,7 @@
       font-size: 1.4rem;
       letter-spacing: 0.3rem;
       font-weight: 600;
+      font-family: 'Orbitron', 'Space Grotesk', sans-serif;
     }
 
     .card-meta {
@@ -175,6 +188,7 @@
       font-size: 1.3rem;
       font-weight: 700;
       text-align: right;
+      font-family: 'Orbitron', 'Space Grotesk', sans-serif;
     }
 
     .floating-circle {
@@ -260,6 +274,10 @@
       transform: translateY(-8px);
     }
 
+    .plan-card.obsidian {
+      border-image: linear-gradient(120deg, rgba(124, 92, 252, 0.6), rgba(45, 226, 230, 0.4)) 1;
+    }
+
     .plan-card:hover {
       transform: translateY(-6px);
       border-color: rgba(124, 92, 252, 0.4);
@@ -301,8 +319,8 @@
     .profile-section {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      align-items: center;
+      gap: 2.5rem;
+      align-items: flex-start;
     }
 
     .profile-mock {
@@ -315,6 +333,29 @@
 
     .profile-mock h4 {
       margin-top: 0;
+    }
+
+    .profile-info-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .profile-label {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .profile-value {
+      margin: 0.2rem 0 0;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Orbitron', 'Space Grotesk', sans-serif;
     }
 
     .wallet-list li {
@@ -330,6 +371,28 @@
       background: rgba(45, 226, 230, 0.15);
       color: var(--success);
       font-size: 0.8rem;
+    }
+
+    .badge.muted {
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      border: 1px dashed rgba(150, 160, 199, 0.4);
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .ghost-button {
+      margin-top: 1rem;
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      border: 1px dashed rgba(150, 160, 199, 0.5);
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      cursor: not-allowed;
     }
 
     .faq {
@@ -353,13 +416,29 @@
     footer {
       padding: 3rem 0;
       border-top: 1px solid var(--border);
-      background: rgba(5, 6, 10, 0.92);
+      background: radial-gradient(circle at top right, rgba(124, 92, 252, 0.25), transparent 45%), rgba(5, 6, 10, 0.95);
     }
 
     .footer-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-2);
     }
 
     .socials {
@@ -376,6 +455,102 @@
       place-items: center;
       color: var(--text);
       text-decoration: none;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 40;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-content {
+      width: min(480px, 100%);
+      background: rgba(12, 14, 25, 0.95);
+      border-radius: 24px;
+      border: 1px solid rgba(124, 92, 252, 0.4);
+      padding: 2rem;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      border: none;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .modal-header {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 0.7rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      border-color: rgba(45, 226, 230, 0.5);
+      background: rgba(45, 226, 230, 0.08);
+      color: var(--accent-2);
+    }
+
+    .auth-form label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .auth-form input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .form-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.8rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .auth-result {
+      text-align: center;
+      font-weight: 600;
+      color: var(--accent-2);
     }
 
     @media (max-width: 640px) {
@@ -397,7 +572,7 @@
       <nav>
         <a href="#benefits">Преимущества</a>
         <a href="#steps">Как это работает</a>
-        <a href="#plans">Тарифы</a>
+        <a href="#cards">Карты</a>
         <a href="#profile">Профиль</a>
         <a href="#faq">FAQ</a>
       </nav>
@@ -409,7 +584,7 @@
       <div>
         <h1>Плати криптовалютой как обычной картой</h1>
         <p>RexCard Plus подключает виртуальную карту к вашим кошелькам и позволяет расплачиваться криптой в реальном времени в любой точке мира.</p>
-        <button class="cta-button" onclick="document.getElementById('plans').scrollIntoView({behavior: 'smooth'})">
+        <button class="cta-button" id="cta-button">
           Начать пользоваться картой
           <span aria-hidden="true">↗</span>
         </button>
@@ -485,41 +660,55 @@
       </div>
     </section>
 
-    <section id="plans">
+    <section id="cards">
       <div class="container">
-        <h2 class="section-title">Тарифные планы</h2>
+        <h2 class="section-title">Выберите карту RexCard</h2>
+        <p style="color: var(--muted); max-width: 720px; margin-bottom: 2.5rem;">
+          В линейке есть подписки для разных сценариев: от бесплатной пробной RexCard Free до премиальной Obsidian.
+          Все карты работают по всему миру, а оформление занимает меньше минуты в вашем профиле.
+        </p>
         <div class="plans">
-          <div class="plan-card">
-            <h3 class="plan-title">Explorer</h3>
-            <p>Для первых поездок и тестов сервиса.</p>
+          <article class="plan-card">
+            <h3 class="plan-title">RexCard Free</h3>
+            <p>Пробный доступ на 1 месяц, чтобы протестировать сервис.</p>
             <ul>
-              <li>Комиссия 1.5% за транзакцию</li>
-              <li>Лимит 5 000 $ в месяц</li>
-              <li>1 подключенный кошелёк</li>
+              <li>Стоимость: 0 € (1 месяц)</li>
+              <li>Лимит: 1 000 €</li>
+              <li>1 кошелёк, базовые комиссии</li>
             </ul>
-            <a href="#profile" class="plan-cta">Выбрать тариф</a>
-          </div>
-          <div class="plan-card popular">
-            <span class="plan-badge">Popular</span>
-            <h3 class="plan-title">Globe</h3>
-            <p>Оптимальный баланс комиссий и лимитов.</p>
+            <a href="#profile" class="plan-cta">Оформить карту</a>
+          </article>
+          <article class="plan-card">
+            <h3 class="plan-title">RexCard Base</h3>
+            <p>Универсальный вариант для ежедневных покупок.</p>
             <ul>
-              <li>Комиссия 0.9%</li>
-              <li>Лимит 50 000 $ в месяц</li>
-              <li>До 5 кошельков</li>
+              <li>Стоимость: 10 € / месяц</li>
+              <li>Лимит: 10 000 €</li>
+              <li>Поддержка 2 кошельков</li>
             </ul>
-            <a href="#profile" class="plan-cta">Выбрать тариф</a>
-          </div>
-          <div class="plan-card">
-            <h3 class="plan-title">Infinity</h3>
-            <p>Максимальные лимиты, приоритетная поддержка.</p>
+            <a href="#profile" class="plan-cta">Оформить карту</a>
+          </article>
+          <article class="plan-card popular">
+            <span class="plan-badge">Platinum</span>
+            <h3 class="plan-title">RexCard Platinum</h3>
+            <p>Премиальная карта с дополнительными лимитами и поддержкой.</p>
             <ul>
-              <li>Комиссия 0.5%</li>
-              <li>Лимит 250 000 $ в месяц</li>
-              <li>До 10 кошельков + API</li>
+              <li>Стоимость: 25 € / месяц</li>
+              <li>Лимит: 75 000 €</li>
+              <li>До 5 кошельков + приоритет</li>
             </ul>
-            <a href="#profile" class="plan-cta">Выбрать тариф</a>
-          </div>
+            <a href="#profile" class="plan-cta">Оформить карту</a>
+          </article>
+          <article class="plan-card obsidian">
+            <h3 class="plan-title">RexCard Obsidian</h3>
+            <p>VIP-доступ, лучшие лимиты и персональный менеджер.</p>
+            <ul>
+              <li>Стоимость: 100 € / месяц</li>
+              <li>Лимит: 250 000 €</li>
+              <li>10 кошельков + API & concierge</li>
+            </ul>
+            <a href="#profile" class="plan-cta">Оформить карту</a>
+          </article>
         </div>
       </div>
     </section>
@@ -528,27 +717,36 @@
       <div class="container profile-section">
         <div>
           <h2 class="section-title">Профиль и управление картой</h2>
-          <p>В личном кабинете вы подключаете и отключаете кошельки, оформляете карту, выбираете тарифы и следите за статусом RexChange Card. Визуальный интерфейс напоминает банковский, но адаптирован под крипту: видны комиссии, курсы конвертации и последние транзакции.</p>
+          <p>Личный кабинет сразу показывает активную карту, лимиты и статус. Здесь оформляется RexCard Free, Base, Platinum или Obsidian, а выбранная карта жёстко привязывается к профилю и кошелькам.</p>
           <ul>
-            <li>Простое управление кошельками: MetaMask, Ledger, Phantom, собственные ноды.</li>
-            <li>Быстрая активация карты — статус обновляется за секунды.</li>
-            <li>Контроль комиссий и прозрачные отчёты по транзакциям.</li>
+            <li>Все подключенные кошельки пока в статусе «Отключен», подключение появится скоро.</li>
+            <li>Быстрая активация карты и контроль лимитов в одну кнопку.</li>
+            <li>Прозрачные комиссии, история транзакций и защита данных.</li>
           </ul>
         </div>
         <div class="profile-mock" aria-label="Мокап профиля">
           <h4>Ваш профиль</h4>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-            <span>RexChange Card</span>
+          <div class="profile-info-row">
+            <div>
+              <p class="profile-label">Активная карта</p>
+              <p class="profile-value">RexCard Free · 1 месяц</p>
+            </div>
             <span class="status-pill">Активна</span>
           </div>
-          <p style="color:var(--muted);">Тариф: Globe · Следующее списание 01/04</p>
+          <div class="profile-info-row">
+            <div>
+              <p class="profile-label">Следующее оформление</p>
+              <p class="profile-value">Можно обновить до Base / Platinum / Obsidian</p>
+            </div>
+          </div>
           <h5>Подключенные кошельки</h5>
           <ul class="wallet-list">
-            <li><span>ETH · MetaMask</span><span>Основной</span></li>
-            <li><span>USDC · Ledger</span><button style="background:none;border:none;color:var(--accent-2);">Отключить</button></li>
-            <li><span>BTC · Sparrow</span><button style="background:none;border:none;color:var(--accent-2);">Отключить</button></li>
+            <li><span>ETH · MetaMask</span><span class="badge muted">Отключен</span></li>
+            <li><span>USDC · Ledger</span><span class="badge muted">Отключен</span></li>
+            <li><span>BTC · Sparrow</span><span class="badge muted">Отключен</span></li>
           </ul>
-          <button class="cta-button" style="width:100%; margin-top:1.5rem;">Управлять картой</button>
+          <button class="ghost-button" disabled>Подключение кошелька — Coming Soon</button>
+          <button class="cta-button" style="width:100%; margin-top:1rem;">Управлять картой</button>
         </div>
       </div>
     </section>
@@ -597,20 +795,19 @@
   <footer>
     <div class="container footer-grid">
       <div>
-        <h3>RexCard Plus</h3>
-        <p>Подключите любой кошелёк и платите криптовалютой как обычной премиальной картой.</p>
+        <h3 class="logo">RexCard Plus</h3>
+        <p>Плати криптовалютой как картой Mastercard по всему миру. RexCard Free, Base, Platinum и Obsidian — выберите свой формат.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Ресурсы</h4>
+        <a href="#">Поддержка</a>
+        <a href="#">Документация</a>
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Условия использования</a>
       </div>
       <div>
-        <h4>Ссылки</h4>
-        <ul style="list-style:none; padding:0; margin:0;">
-          <li><a href="#" style="color:var(--muted); text-decoration:none;">Поддержка</a></li>
-          <li><a href="#" style="color:var(--muted); text-decoration:none;">Документация</a></li>
-          <li><a href="#" style="color:var(--muted); text-decoration:none;">Политика конфиденциальности</a></li>
-          <li><a href="#" style="color:var(--muted); text-decoration:none;">Условия использования</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Соцсети</h4>
+        <h4>Следите за нами</h4>
+        <p style="color:var(--muted);">Новости релизов и апдейтов безопасности.</p>
         <div class="socials">
           <a href="#" aria-label="Twitter">𝕏</a>
           <a href="#" aria-label="Telegram">✈</a>
@@ -619,6 +816,43 @@
       </div>
     </div>
   </footer>
+
+  <div class="modal" id="auth-modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Закрыть форму">×</button>
+      <div class="modal-header">
+        <button class="tab-button active" data-tab="signup">Регистрация</button>
+        <button class="tab-button" data-tab="signin">Авторизация</button>
+      </div>
+      <form id="signup-form" class="auth-form" autocomplete="off">
+        <h3 id="modal-title">Создайте аккаунт</h3>
+        <label>Почта
+          <input type="email" name="email" required placeholder="you@rexcard.io">
+        </label>
+        <label>Логин
+          <input type="text" name="username" required placeholder="rex_user">
+        </label>
+        <label>Пароль
+          <input type="password" name="password" required placeholder="••••••">
+        </label>
+        <button type="submit" class="cta-button" style="width:100%; justify-content:center;">Зарегистрироваться</button>
+        <p class="form-note">После регистрации мы авторизуем вас и перенаправим в профиль для оформления карты.</p>
+      </form>
+      <form id="signin-form" class="auth-form hidden" autocomplete="off">
+        <h3>Войти в аккаунт</h3>
+        <label>Почта
+          <input type="email" name="login-email" required placeholder="you@rexcard.io">
+        </label>
+        <label>Пароль
+          <input type="password" name="login-password" required placeholder="••••••">
+        </label>
+        <button type="submit" class="cta-button" style="width:100%; justify-content:center;">Войти</button>
+      </form>
+      <div class="auth-result hidden" id="auth-result">
+        <p>Добро пожаловать! Переходим в профиль для выбора карты.</p>
+      </div>
+    </div>
+  </div>
 
   <script>
     // Генерация номера карты: 4276 + 12 случайных цифр.
@@ -634,6 +868,62 @@
 
     const cardNumberElement = document.getElementById('card-number');
     cardNumberElement.textContent = generateCardNumber();
+
+    const modal = document.getElementById('auth-modal');
+    const ctaButton = document.getElementById('cta-button');
+    const closeButton = document.getElementById('modal-close');
+    const tabs = document.querySelectorAll('.tab-button');
+    const signupForm = document.getElementById('signup-form');
+    const signinForm = document.getElementById('signin-form');
+    const resultBlock = document.getElementById('auth-result');
+
+    function resetForms() {
+      tabs.forEach((t) => t.classList.remove('active'));
+      tabs[0].classList.add('active');
+      signupForm.classList.remove('hidden');
+      signinForm.classList.add('hidden');
+      resultBlock.classList.add('hidden');
+    }
+
+    function openModal() {
+      resetForms();
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    ctaButton.addEventListener('click', openModal);
+    closeButton.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.dataset.tab;
+        signupForm.classList.toggle('hidden', target !== 'signup');
+        signinForm.classList.toggle('hidden', target !== 'signin');
+        resultBlock.classList.add('hidden');
+      });
+    });
+
+    function simulateAuth(event) {
+      event.preventDefault();
+      resultBlock.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      signinForm.classList.add('hidden');
+    }
+
+    signupForm.addEventListener('submit', simulateAuth);
+    signinForm.addEventListener('submit', simulateAuth);
   </script>
 </body>
 </html>
