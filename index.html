@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RexCard Plus — криптокарта</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060a;
+      --panel: rgba(15, 18, 32, 0.85);
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #f4f6ff;
+      --muted: #96a0c7;
+      --accent: #7c5cfc;
+      --accent-2: #2de2e6;
+      --success: #36f3c3;
+      --warning: #f7a435;
+      --border: rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(45, 226, 230, 0.2), transparent 40%),
+                  radial-gradient(circle at 80% 0%, rgba(124, 92, 252, 0.3), transparent 45%),
+                  var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(18px);
+      background: rgba(5, 6, 10, 0.85);
+      border-bottom: 1px solid var(--border);
+      z-index: 20;
+    }
+
+    .container {
+      width: min(1200px, 92%);
+      margin: 0 auto;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.25rem;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--accent-2);
+    }
+
+    main {
+      overflow: hidden;
+    }
+
+    section {
+      padding: 5rem 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      align-items: center;
+      padding: 6rem 0 5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.15rem;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      padding: 1rem 2.5rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, #7c5cfc, #2de2e6);
+      box-shadow: 0 15px 35px rgba(45, 226, 230, 0.25);
+      color: #05060a;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.03) translateY(-2px);
+      box-shadow: 0 25px 45px rgba(124, 92, 252, 0.35);
+    }
+
+    .card-display {
+      background: linear-gradient(135deg, #bfc5d2, #8d96a6 45%, #c0c4ce 70%, #f4f4f7);
+      color: #05060a;
+      border-radius: 28px;
+      padding: 2.5rem;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-display::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.6), transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .card-chip {
+      width: 54px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #ffe7b3, #d9b074);
+      margin-bottom: 1.5rem;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-number {
+      font-size: 1.4rem;
+      letter-spacing: 0.3rem;
+      font-weight: 600;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15rem;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .floating-circle {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(124, 92, 252, 0.15);
+      filter: blur(10px);
+      top: -70px;
+      right: -80px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .card {
+      padding: 1.75rem;
+      border-radius: 22px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(45, 226, 230, 0.4);
+    }
+
+    .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(45, 226, 230, 0.12);
+      display: grid;
+      place-items: center;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      color: var(--accent-2);
+    }
+
+    .steps {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      counter-reset: step;
+    }
+
+    .step-card::before {
+      counter-increment: step;
+      content: '0' counter(step);
+      font-weight: 700;
+      color: var(--accent-2);
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .plan-card {
+      position: relative;
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      background: rgba(12, 14, 25, 0.95);
+      border: 1px solid var(--border);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.35);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .plan-card.popular {
+      border-color: var(--accent);
+      transform: translateY(-8px);
+    }
+
+    .plan-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(124, 92, 252, 0.4);
+    }
+
+    .plan-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .plan-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(124, 92, 252, 0.15);
+      border: 1px solid rgba(124, 92, 252, 0.4);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .plan-cta {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.65rem 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(45, 226, 230, 0.4);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+
+    .plan-cta:hover {
+      background: rgba(45, 226, 230, 0.12);
+    }
+
+    .profile-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .profile-mock {
+      background: var(--panel);
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      padding: 2rem;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    .profile-mock h4 {
+      margin-top: 0;
+    }
+
+    .wallet-list li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 0.6rem 0;
+    }
+
+    .status-pill {
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(45, 226, 230, 0.15);
+      color: var(--success);
+      font-size: 0.8rem;
+    }
+
+    .faq {
+      display: grid;
+      gap: 1rem;
+    }
+
+    details {
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      outline: none;
+    }
+
+    footer {
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      background: rgba(5, 6, 10, 0.92);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .socials {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .socials a {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        display: none;
+      }
+
+      .card-number {
+        font-size: 1.1rem;
+        letter-spacing: 0.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">RexCard Plus</div>
+      <nav>
+        <a href="#benefits">Преимущества</a>
+        <a href="#steps">Как это работает</a>
+        <a href="#plans">Тарифы</a>
+        <a href="#profile">Профиль</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container" id="hero">
+      <div>
+        <h1>Плати криптовалютой как обычной картой</h1>
+        <p>RexCard Plus подключает виртуальную карту к вашим кошелькам и позволяет расплачиваться криптой в реальном времени в любой точке мира.</p>
+        <button class="cta-button" onclick="document.getElementById('plans').scrollIntoView({behavior: 'smooth'})">
+          Начать пользоваться картой
+          <span aria-hidden="true">↗</span>
+        </button>
+        <p style="margin-top:1rem; color: var(--muted); font-size:0.9rem;">Работает в любой стране, где принимают банковские карты. Самые низкие комиссии в сегменте крипто-карт.</p>
+      </div>
+        <div class="card-display" aria-label="Виртуальная карта RexChange Card">
+        <div class="floating-circle" aria-hidden="true"></div>
+        <div class="card-chip"></div>
+        <div>
+          <div class="card-number" id="card-number">4276 0000 0000 0000</div>
+          <div class="card-meta">
+            <span>VALID 12/29</span>
+            <span>CVC •• •</span>
+          </div>
+        </div>
+        <div class="card-title">RexChange Card</div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="container">
+        <h2 class="section-title">Почему RexCard Plus</h2>
+        <div class="grid">
+          <div class="card">
+            <div class="icon">🌍</div>
+            <h3>В любой стране</h3>
+            <p>Оплачивайте покупки онлайн и офлайн там, где принимают карты — покрытие по всему миру.</p>
+          </div>
+          <div class="card">
+            <div class="icon">⚡</div>
+            <h3>Реальное время</h3>
+            <p>Списываем крипту мгновенно из выбранного кошелька и конвертируем в нужную валюту.</p>
+          </div>
+          <div class="card">
+            <div class="icon">💳</div>
+            <h3>Минимальные комиссии</h3>
+            <p>Собственная сеть ликвидности гарантирует лучшие тарифы среди глобальных крипто-карт.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🔗</div>
+            <h3>Несколько кошельков</h3>
+            <p>Подключайте и переключайте кошельки в пару кликов, храните активы там, где вам удобно.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="steps">
+      <div class="container">
+        <h2 class="section-title">Как это работает</h2>
+        <div class="grid steps">
+          <div class="card step-card">
+            <div class="icon">1</div>
+            <h3>Подключите кошелёк</h3>
+            <p>Авторизуйтесь, подтвердите владение и выберите активный кошелёк.</p>
+          </div>
+          <div class="card step-card">
+            <div class="icon">2</div>
+            <h3>Выберите тариф</h3>
+            <p>Подпишите тарифный план, который подходит вашему обороту и лимитам.</p>
+          </div>
+          <div class="card step-card">
+            <div class="icon">3</div>
+            <h3>Получите карту</h3>
+            <p>В интерфейсе сразу появляется виртуальная RexChange Card с номером 4276.</p>
+          </div>
+          <div class="card step-card">
+            <div class="icon">4</div>
+            <h3>Платите по всему миру</h3>
+            <p>Оплачивайте криптой в магазинах, сервисах и онлайн-платформах без ограничений.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="plans">
+      <div class="container">
+        <h2 class="section-title">Тарифные планы</h2>
+        <div class="plans">
+          <div class="plan-card">
+            <h3 class="plan-title">Explorer</h3>
+            <p>Для первых поездок и тестов сервиса.</p>
+            <ul>
+              <li>Комиссия 1.5% за транзакцию</li>
+              <li>Лимит 5 000 $ в месяц</li>
+              <li>1 подключенный кошелёк</li>
+            </ul>
+            <a href="#profile" class="plan-cta">Выбрать тариф</a>
+          </div>
+          <div class="plan-card popular">
+            <span class="plan-badge">Popular</span>
+            <h3 class="plan-title">Globe</h3>
+            <p>Оптимальный баланс комиссий и лимитов.</p>
+            <ul>
+              <li>Комиссия 0.9%</li>
+              <li>Лимит 50 000 $ в месяц</li>
+              <li>До 5 кошельков</li>
+            </ul>
+            <a href="#profile" class="plan-cta">Выбрать тариф</a>
+          </div>
+          <div class="plan-card">
+            <h3 class="plan-title">Infinity</h3>
+            <p>Максимальные лимиты, приоритетная поддержка.</p>
+            <ul>
+              <li>Комиссия 0.5%</li>
+              <li>Лимит 250 000 $ в месяц</li>
+              <li>До 10 кошельков + API</li>
+            </ul>
+            <a href="#profile" class="plan-cta">Выбрать тариф</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="profile">
+      <div class="container profile-section">
+        <div>
+          <h2 class="section-title">Профиль и управление картой</h2>
+          <p>В личном кабинете вы подключаете и отключаете кошельки, оформляете карту, выбираете тарифы и следите за статусом RexChange Card. Визуальный интерфейс напоминает банковский, но адаптирован под крипту: видны комиссии, курсы конвертации и последние транзакции.</p>
+          <ul>
+            <li>Простое управление кошельками: MetaMask, Ledger, Phantom, собственные ноды.</li>
+            <li>Быстрая активация карты — статус обновляется за секунды.</li>
+            <li>Контроль комиссий и прозрачные отчёты по транзакциям.</li>
+          </ul>
+        </div>
+        <div class="profile-mock" aria-label="Мокап профиля">
+          <h4>Ваш профиль</h4>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <span>RexChange Card</span>
+            <span class="status-pill">Активна</span>
+          </div>
+          <p style="color:var(--muted);">Тариф: Globe · Следующее списание 01/04</p>
+          <h5>Подключенные кошельки</h5>
+          <ul class="wallet-list">
+            <li><span>ETH · MetaMask</span><span>Основной</span></li>
+            <li><span>USDC · Ledger</span><button style="background:none;border:none;color:var(--accent-2);">Отключить</button></li>
+            <li><span>BTC · Sparrow</span><button style="background:none;border:none;color:var(--accent-2);">Отключить</button></li>
+          </ul>
+          <button class="cta-button" style="width:100%; margin-top:1.5rem;">Управлять картой</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <h2 class="section-title">FAQ и безопасность</h2>
+        <div class="faq">
+          <details open>
+            <summary>Как подключить кошелёк?</summary>
+            <p>В профиле нажмите «Добавить кошелёк», подтвердите подписью и выберите валюту списания. Поддерживаются MetaMask, WalletConnect, Ledger, TronLink и кастомные RPC.</p>
+          </details>
+          <details>
+            <summary>Насколько это безопасно?</summary>
+            <p>Используем шифрование TLS 1.3, храним только публичные данные, приватные ключи остаются у пользователя. Каждая транзакция подтверждается многофакторной авторизацией и антифрод-алгоритмами.</p>
+          </details>
+          <details>
+            <summary>В каких странах работает карта?</summary>
+            <p>RexChange Card поддерживается во всех странах, где принимают карты Visa/Mastercard. Мы автоматически подбираем нужную валюту для списания.</p>
+          </details>
+          <details>
+            <summary>Какие комиссии?</summary>
+            <p>Комиссии зависят от тарифного плана и валюты. Минимальные — от 0.5% за транзакцию, без скрытых платежей и платы за обслуживание карты.</p>
+          </details>
+          <details>
+            <summary>Как устроена безопасность?</summary>
+            <p>Данные карт токенизируются и хранятся в изолированных PCI DSS-хранилищах, приватные ключи не передаются сервису, все операции логируются и защищаются антифрод-модулем.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="backend" style="padding-top:0;">
+      <div class="container">
+        <h2 class="section-title">Как бы выглядел backend</h2>
+        <div class="card">
+          <p><strong>Профили пользователей:</strong> сервис авторизации (OAuth + wallet-signature), хранение в базе данных (PostgreSQL) с зашифрованными персональными данными. Токены доступа выдаются по принципу short-lived + refresh.</p>
+          <p><strong>Привязка кошельков:</strong> модуль custody соединяется с цепочками через RPC/вебсокеты, хранит публичные адреса, подписанные разрешения и метаданные. Приватные ключи не сохраняются.</p>
+          <p><strong>Управление картами и тарифами:</strong> микросервис «cards» генерирует виртуальные карты, синхронизируется с эквайерами, контролирует лимиты и комиссионные правила. Очереди событий (Kafka) обновляют статусы в реальном времени.</p>
+          <p><strong>Безопасное хранение:</strong> конфиденциальные данные в HSM, журналирование операций, автоматический антифрод и мониторинг с использованием ML-моделей для выявления аномалий.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <h3>RexCard Plus</h3>
+        <p>Подключите любой кошелёк и платите криптовалютой как обычной премиальной картой.</p>
+      </div>
+      <div>
+        <h4>Ссылки</h4>
+        <ul style="list-style:none; padding:0; margin:0;">
+          <li><a href="#" style="color:var(--muted); text-decoration:none;">Поддержка</a></li>
+          <li><a href="#" style="color:var(--muted); text-decoration:none;">Документация</a></li>
+          <li><a href="#" style="color:var(--muted); text-decoration:none;">Политика конфиденциальности</a></li>
+          <li><a href="#" style="color:var(--muted); text-decoration:none;">Условия использования</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Соцсети</h4>
+        <div class="socials">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Telegram">✈</a>
+          <a href="#" aria-label="Discord">💬</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Генерация номера карты: 4276 + 12 случайных цифр.
+    function generateCardNumber() {
+      const prefix = '4276';
+      let digits = '';
+      for (let i = 0; i < 12; i++) {
+        digits += Math.floor(Math.random() * 10);
+      }
+      const raw = prefix + digits;
+      return raw.replace(/(.{4})/g, '$1 ').trim();
+    }
+
+    const cardNumberElement = document.getElementById('card-number');
+    cardNumberElement.textContent = generateCardNumber();
+  </script>
+</body>
+</html>
